@@ -3,6 +3,36 @@
 
 cmake_minimum_required (VERSION 3.0)
 
+if(HUNTER_ENABLED)
+file(WRITE ${CMAKE_BINARY_DIR}/config.cmake [=[
+hunter_config(LLVM
+  URL "https://github.com/llvm/llvm-project/archive/llvmorg-20.1.1.tar.gz"
+  SHA1 "47313ffa906cffe411b757718e18269be11b0328"
+  CMAKE_ARGS
+    LLVM_APPEND_VC_REV:BOOL=ON
+    LLVM_BUILD_EXAMPLES:BOOL=OFF
+    LLVM_BUILD_LLVM_DYLIB:BOOL=OFF
+    LLVM_ENABLE_BINDINGS:BOOL=OFF
+    LLVM_ENABLE_IDE:BOOL=OFF
+    LLVM_ENABLE_LIBEDIT=OFF
+    LLVM_ENABLE_TERMINFO:BOOL=OFF
+    LLVM_ENABLE_ZLIB:BOOL=ON
+    LLVM_INCLUDE_BENCHMARKS:BOOL=OFF
+    LLVM_INCLUDE_DOCS:BOOL=OFF
+    LLVM_INCLUDE_EXAMPLES:BOOL=OFF
+    LLVM_INCLUDE_UTILS:BOOL=OFF
+    LLVM_INCLUDE_TESTS:BOOL=OFF
+    LLVM_OPTIMIZED_TABLEGEN:BOOL=ON)
+]=])
+
+set(HUNTER_PACKAGES zstd libxml2 ZLIB LLVM)
+set(HUNTER_FILEPATH_CONFIG ${CMAKE_BINARY_DIR}/config.cmake)
+endif()
+
+include(FetchContent)
+FetchContent_Declare(SetupHunter GIT_REPOSITORY https://github.com/cpp-pm/gate)
+FetchContent_MakeAvailable(SetupHunter)
+
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 
 if(ESP_PLATFORM)
