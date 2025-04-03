@@ -318,10 +318,9 @@ aot_apply_llvm_new_pass_manager(AOTCompContext *comp_ctx, LLVMModuleRef module)
     ModulePassManager MPM;
 
     if (comp_ctx->is_jit_mode) {
-        const char *Passes =
-            "loop-vectorize,slp-vectorizer,"
-            "load-store-vectorizer,vector-combine,"
-            "mem2reg,instcombine,simplifycfg,jump-threading,indvars";
+        const char *Passes = "loop-vectorize,slp-vectorizer,"
+                             "load-store-vectorizer,vector-combine,"
+                             "mem2reg,simplifycfg,jump-threading,indvars";
         ExitOnErr(PB.parsePassPipeline(MPM, Passes));
     }
     else {
